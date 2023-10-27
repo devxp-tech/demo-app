@@ -9,6 +9,8 @@ description: "demo-app"
 
 ## Team
 
-
-
 This is a basic example of documentation.
+
+### About
+
+Developed with love for @diegoluisi
