@@ -1,7 +1,10 @@
 # this is just a common layer to use local and builds
-FROM golang:1.20-alpine as base
+FROM golang:1.20.10-alpine as base
 RUN apk --no-cache update && apk add --no-cache git ca-certificates
 RUN update-ca-certificates
+ENV SERVICE_NAME=demo-app
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="localhost:4317"
+ENV INSECURE_MODE="true"
 
 # this layer is reponsable to execute tests in cicle-ci
 FROM base as ci

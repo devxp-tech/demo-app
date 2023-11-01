@@ -4,9 +4,12 @@ import (
 	"context"
 	"log"
 	"os"
+	"time"
 
 	_ "github.com/devxp-tech/demo-app/config"
 	"github.com/devxp-tech/demo-app/controllers"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 	"google.golang.org/grpc/credentials"
 
@@ -22,9 +25,25 @@ import (
 
 // var serviceName string
 var (
-	serviceName  = os.Getenv("SERVICE_NAME")
-	collectorURL = os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
-	insecure     = os.Getenv("INSECURE_MODE")
+	serviceName  string //os.Getenv("SERVICE_NAME")
+	collectorURL string //os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+	insecure     string //os.Getenv("INSECURE_MODE")
+)
+
+func recordMetrics() {
+	go func() {
+		for {
+			opsProcessed.Inc()
+			time.Sleep(2 * time.Second)
+		}
+	}()
+}
+
+var (
+	opsProcessed = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "myapp_processed_ops_total",
+		Help: "The total number of processed events",
+	})
 )
 
 func initTracer() func(context.Context) error {
@@ -67,6 +86,22 @@ func initTracer() func(context.Context) error {
 }
 
 func main() {
+	serviceName = "demo-app"
+	collectorURL = "localhost:4317"
+	insecure = "true"
+
+	if os.Getenv("SERVICE_NAME") != "" {
+		serviceName = os.Getenv("SERVICE_NAME")
+	}
+
+	if os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT") != "" {
+		collectorURL = os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+	}
+
+	if os.Getenv("INSECURE_MODE") != "" {
+		serviceName = os.Getenv("INSECURE_MODE")
+	}
+
 	cleanup := initTracer()
 	defer cleanup(context.Background())
 	// Server
@@ -81,6 +116,7 @@ func main() {
 			"message": "Hello world for your app demo-app",
 		})
 	})
+
 	router.GET("/health-check/liveness", controllers.HealthCheckLiveness)
 	router.GET("/health-check/readiness", controllers.HealthCheckReadiness)
 	router.Run()
