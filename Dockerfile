@@ -1,5 +1,5 @@
 # this is just a common layer to use local and builds
-FROM golang:1.20-alpine as base
+FROM golang:1.19-alpine as base
 RUN apk --no-cache update && apk add --no-cache git ca-certificates
 RUN update-ca-certificates
 
