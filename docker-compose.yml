@@ -13,6 +13,9 @@ services:
       - PORT=80 # dont forget when change this value here &&&
       - CGO_ENABLED=0
       - GOOS=linux
+      - SERVICE_NAME=demo-app
+      - OTEL_EXPORTER_OTLP_ENDPOINT="localhost:4317"
+      - INSECURE_MODE="true"
     volumes:
       - .:/app/
       - go_packages:/go
