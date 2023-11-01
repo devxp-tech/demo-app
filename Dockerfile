@@ -23,3 +23,5 @@ COPY --from=builder /app/entrypoint .
 COPY --from=builder /app/rev.txt .
 
 ENTRYPOINT [ "/entrypoint" ]
+
+
