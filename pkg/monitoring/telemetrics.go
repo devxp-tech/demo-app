@@ -70,7 +70,7 @@ func (m *Monitoring) InitProvider() (func(context.Context) error, error) {
 	res, err := resource.New(ctx,
 		resource.WithAttributes(
 			// the service name used to display traces in backends
-			semconv.ServiceName("test-service"),
+			semconv.ServiceName("demo-app"),
 		),
 	)
 	if err != nil {
@@ -84,7 +84,8 @@ func (m *Monitoring) InitProvider() (func(context.Context) error, error) {
 	// probably connect directly to the service through dns.
 	ctx, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	conn, err := grpc.DialContext(ctx, "localhost:30080",
+	conn, err := grpc.DialContext(ctx, "localhost:4317",
+		// conn, err := grpc.DialContext(ctx, "http://otel-collector.observability.svc.cluster.local:4318",
 		// Note the use of insecure transport here. TLS is recommended in production.
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),

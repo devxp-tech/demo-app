@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -19,7 +20,10 @@ import (
 
 func main() {
 	monit := monitoring.New()
+	app := "demo-app"
+
 	// Server
+	fmt.Println("Welcome to", app)
 	log.Println("Starting server...")
 	router := gin.New()
 	p := ginprometheus.NewPrometheus("gin")
@@ -38,7 +42,7 @@ func main() {
 			}
 		}()
 
-		tracer := otel.Tracer("test-tracer")
+		tracer := otel.Tracer("demo-app")
 
 		// Attributes represent additional key-value descriptors that can be bound
 		// to a metric observer or recorder.
