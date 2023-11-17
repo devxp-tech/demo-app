@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/devxp-tech/demo-app/pkd/github"
 	"github.com/gin-gonic/gin"
 	"github.com/gritzkoo/golang-health-checker-lw/pkg/healthchecker"
 	"github.com/sirupsen/logrus"
@@ -12,14 +11,9 @@ import (
 
 var version, _ = ioutil.ReadFile("rev.txt")
 var checker = healthchecker.New(healthchecker.Config{
-	Name:    "demo-app",
-	Version: string(version),
-	Integrations: []healthchecker.Check{
-		{
-			Name:   "GitHub Api Integration",
-			Handle: github.Status, // you should write your own tests to pass here!
-		},
-	},
+	Name:         "demo-app",
+	Version:      string(version),
+	Integrations: []healthchecker.Check{},
 })
 
 // HealthCheckLiveness show a simple check
