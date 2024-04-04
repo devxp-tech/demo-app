@@ -3,7 +3,7 @@ name: demo-app
 
 # `vars` specifies variables which may be used as ${VAR_NAME} in devspace.yaml
 vars:
-  IMAGE: ghcr.io/devxp-tech/demo-app:7df51a75 #:devspace
+  IMAGE: ghcr.io/devxp-tech/demo-app #:devspace
 
 pipelines:
   # Override the default pipeline for 'devspace dev'

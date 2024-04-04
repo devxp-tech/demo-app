@@ -96,7 +96,7 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status":  true,
-			"message": "Hello world for your app " + serviceName,
+			"message": "Hello world for your app xxx " + serviceName,
 		})
 	})
 	router.GET("/health-check/liveness", controllers.HealthCheckLiveness)
